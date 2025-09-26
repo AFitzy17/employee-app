@@ -7,9 +7,7 @@ fun main (args: Array<String>) {
 }
 
 fun employee() {
-    println("\n--------------------------------------------------")
-    println("|                Monthly Payslip                 |")
-    println("|------------------------------------------------|")
+
     val firstName: String = "Joe"
     val surName: String = "Soap"
     val gender: Char = 'M'
@@ -28,18 +26,22 @@ fun employee() {
     val totalDeductions = paye+prsi+cycleSchemeDeduction
     val netPay = monthlyPay-totalDeductions
 
-    println("|  Employee Name: " + firstName + " " + surName + "(" + gender + ")" + "  Employee ID: " + employeeId + " |")
-    println("|------------------------------------------------|")
-    println("|   PAYMENT DETAILS        DEDUCTION DETAILS     |")
-    println("|------------------------------------------------|")
-    println("|   Salary: " + roundNumber(monthlyPay) + "         PAYE: " + roundNumber(paye) + "         |")
-    println("|   Bonus: " + roundNumber(monthlyBonus) + "          PRSI: " + roundNumber(prsi) + "          |")
-    println("|                          Cycle To Work: " + cycleSchemeDeduction + "  |")
-    println("|------------------------------------------------|")
-    println("|   Gross: " + roundNumber(grossPay) + "   Total Deductions: " + roundNumber(totalDeductions) + "   |")
-    println("|------------------------------------------------|")
-    println("|                NET PAY: " + roundNumber(netPay)+ "                |")
-    println("|------------------------------------------------|")
+    println("""
+        __________________________________________________
+        |                Monthly Payslip                 |
+        |________________________________________________|
+        |  Employee Name: ${firstName} ${surName}(${gender})  Employee ID: ${employeeId} |
+        |________________________________________________|
+        |    PAYMENT DETAILS       DEDUCTION DETAILS     |
+        |________________________________________________|
+        |    Salary: ${roundNumber(monthlyPay)}        PAYE: ${roundNumber(paye)}         |
+        |    Bonus: ${roundNumber(monthlyBonus)}         PRSI: ${roundNumber(prsi)}          |
+        |                          Cycle to Work: ${cycleSchemeDeduction}  |
+        |________________________________________________|
+        |   Gross: ${roundNumber(grossPay)}   Total Deductions: ${roundNumber(totalDeductions)}   |
+        |________________________________________________|
+        |                NET PAY: ${roundNumber(netPay)}                |
+        |________________________________________________|""")
 }
 
 fun roundNumber(number: Double) = round(number*100) /100
