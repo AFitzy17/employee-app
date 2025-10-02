@@ -1,47 +1,86 @@
 import kotlin.math.round
-import kotlin.math.roundToInt
+
+val firstName: String = "Joe"
+val surName: String = "Soap"
+val gender: Char = 'M'
+val employeeId = 6143
+val grossSalary = 67_543.21
+val payePercentage = 38.5
+val prsiPercentage = 5.2
+val annualBonusAmount = 1_450.50
+val cycleSchemeDeduction = 54.33
 
 fun main (args: Array<String>) {
-    println("")
-    employee()
+
+    var input : Int
+
+    do {
+        input = menu()
+        when(input) {
+            1 -> println("Monthly Salary: ${getMonthlySalary()}")
+            2 -> println("Monthly PRSI: ${getMonthlyPRSI()}")
+            3 -> println("Monthly PAYE: ${getMonthlyPAYE()}")
+            4 -> println("Monthly Gross Pay: ${getGrossMonthlyPay()}")
+            5 -> println("Monthly Total Deductions: ${getTotalMonthlyDeductions()}")
+            6 -> println("Monthly Net Pay: ${getNetMonthlyPay()}")
+            7 -> println(getPayslip())
+            -1 -> println("Exiting App")
+            else -> println("Invalid Option")
+        }
+        println()
+    } while (input != -1)
 }
 
-fun employee() {
-
-    val firstName: String = "Joe"
-    val surName: String = "Soap"
-    val gender: Char = 'M'
-    val employeeId = 6143
-    val grossSalary = 67_543.21
-    val payePercentage = 38.5
-    val prsiPercentage = 5.2
-    val annualBonusAmount = 1_450.50
-    val cycleSchemeDeduction = 54.33
-
-    val monthlyPay = grossSalary / 12
-    val paye = monthlyPay/100*payePercentage
-    val monthlyBonus = annualBonusAmount/12
-    val prsi = monthlyPay/100*prsiPercentage
-    val grossPay = monthlyPay+monthlyBonus
-    val totalDeductions = paye+prsi+cycleSchemeDeduction
-    val netPay = monthlyPay-totalDeductions
-
-    println("""
+fun menu() : Int {
+    print("""
+        Employee Menu for ${getFullName()}
+            1. Monthly Salary
+            2. Monthly PRSI
+            3. Monthly PAYE
+            4. Monthly Gross Pay
+            5. Monthly Total Deductions
+            6. Monthly Net Pay
+            7. Full Payslip
+            -1. Exit
+        Enter Option : """)
+    return readln().toInt()
+}
+fun getPayslip() = """
         __________________________________________________
         |                Monthly Payslip                 |
         |________________________________________________|
-        |  Employee Name: ${firstName} ${surName}(${gender})  Employee ID: ${employeeId} |
+        |  Employee Name: ${getFullName()}  Employee ID: ${employeeId} |
         |________________________________________________|
         |    PAYMENT DETAILS       DEDUCTION DETAILS     |
         |________________________________________________|
-        |    Salary: ${roundNumber(monthlyPay)}        PAYE: ${roundNumber(paye)}         |
-        |    Bonus: ${roundNumber(monthlyBonus)}         PRSI: ${roundNumber(prsi)}          |
+        |    Salary: ${getMonthlySalary()}        PAYE: ${getMonthlyPAYE()}         |
+        |    Bonus: ${getMonthlyBonus()}         PRSI: ${getMonthlyPRSI()}          |
         |                          Cycle to Work: ${cycleSchemeDeduction}  |
         |________________________________________________|
-        |   Gross: ${roundNumber(grossPay)}   Total Deductions: ${roundNumber(totalDeductions)}   |
+        |   Gross: ${getGrossMonthlyPay()}   Total Deductions: ${getTotalMonthlyDeductions()}   |
         |________________________________________________|
-        |                NET PAY: ${roundNumber(netPay)}                |
-        |________________________________________________|""")
-}
+        |                NET PAY: ${getNetMonthlyPay()}               |
+        |________________________________________________|"""
+
 
 fun roundNumber(number: Double) = round(number*100) /100
+
+fun getFullName() = when (gender){
+    'm', 'M' -> "Mr $firstName $surName"
+    else -> { "Ms $firstName $surName"
+    }
+}
+
+fun getMonthlySalary() = roundNumber(grossSalary / 12)
+
+fun getMonthlyPAYE() = roundNumber(getMonthlySalary()/100*payePercentage)
+
+fun getMonthlyBonus() = roundNumber(annualBonusAmount/12)
+
+fun getMonthlyPRSI() = roundNumber(getMonthlySalary()/100*prsiPercentage)
+
+fun getGrossMonthlyPay() = roundNumber(getMonthlySalary()+(annualBonusAmount/12))
+
+fun getTotalMonthlyDeductions() = roundNumber(getMonthlyPRSI()+getMonthlyPAYE()+cycleSchemeDeduction)
+
+fun getNetMonthlyPay() = roundNumber(getGrossMonthlyPay()-getTotalMonthlyDeductions())
