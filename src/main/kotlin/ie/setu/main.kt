@@ -1,11 +1,27 @@
-import ie.setu.EmployeeAPI
-import ie.setu.Employee
+import ie.setu.controllers.EmployeeAPI
+import ie.setu.models.Employee
+import mu.KotlinLogging
 import kotlin.math.round
 
 val employees = EmployeeAPI()
+val logger = KotlinLogging.logger {}
 
 fun main(args: Array<String>){
+    logger.info { "Launching Employee App" }
     start()
+}
+
+fun menu() : Int {
+    print("""
+         |Employee Menu
+         |  1. Add Employee
+         |  2. List All Employees
+         |  3. Search Employees
+         |  4. Print Payslip for Employee
+         | -1. Exit
+         |
+         |Enter Option : """.trimMargin())
+    return readln().toInt()
 }
 
 fun start() {
@@ -26,23 +42,11 @@ fun start() {
     } while (input != -1)
 }
 
-fun menu() : Int {
-    print(
-        """
-         |Employee Menu
-         |  1. Add Employee
-         |  2. List All Employees
-         |  3. Search Employees
-         |  4. Print Payslip for Employee
-         | -1. Exit
-         |
-         |Enter Option : """.trimMargin())
-    return readln().toInt()
-}
-
 fun list(){
     employees.findAll()
         .forEach { println(it) }
+
+    logger.info { "Listing Employees" }
 }
 
 fun search() {
@@ -51,6 +55,8 @@ fun search() {
         println("No employee found")
     else
         println(employee)
+
+    logger.info { "Searching Employees" }
 }
 
 internal fun getEmployeeById(): Employee? {
@@ -63,6 +69,8 @@ fun paySlip(){
     val employee = getEmployeeById()
     if (employee != null)
         println(employee.getPayslip())
+
+    logger.info { "Creating Payslip" }
 }
 
 fun dummyData() {
@@ -88,6 +96,7 @@ fun add(){
     val annualBonus = readLine()!!.toDouble()
     print("Enter cycle to Work Deduction: ")
     val cycleToWorkDeduction = readLine()!!.toDouble()
+    logger.info { "Adding Employee" }
 
     employees.create(Employee(firstName, surName, gender, 0, grossSalary, payePercentage, prsiPercentage, annualBonus, cycleToWorkDeduction))
 }

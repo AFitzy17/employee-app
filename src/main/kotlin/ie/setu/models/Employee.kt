@@ -1,4 +1,4 @@
-package ie.setu
+package ie.setu.models
 
 import roundNumber
 
@@ -50,4 +50,3 @@ class Employee (var firstName: String, var surName: String, var gender: Char, va
 
 
 }
-
