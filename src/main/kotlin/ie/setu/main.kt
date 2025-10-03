@@ -1,16 +1,11 @@
+import ie.setu.Employee
 import kotlin.math.round
 
-val firstName: String = "Joe"
-val surName: String = "Soap"
-val gender: Char = 'M'
-val employeeId = 6143
-val grossSalary = 67_543.21
-val payePercentage = 38.5
-val prsiPercentage = 5.2
-val annualBonusAmount = 1_450.50
-val cycleSchemeDeduction = 54.33
-
+var employee = Employee("Joe", "Soap", 'M', 6143, 67543.21, 38.5, 5.2, 1450.50, 54.33)
+//you're on exercise 3 week 3
 fun main (args: Array<String>) {
+
+    add()
 
     var input : Int
 
@@ -49,38 +44,60 @@ fun getPayslip() = """
         __________________________________________________
         |                Monthly Payslip                 |
         |________________________________________________|
-        |  Employee Name: ${getFullName()}  Employee ID: ${employeeId} |
+        |  Employee Name: ${getFullName()}  Employee ID: ${employee.employeeID} |
         |________________________________________________|
         |    PAYMENT DETAILS       DEDUCTION DETAILS     |
         |________________________________________________|
         |    Salary: ${getMonthlySalary()}        PAYE: ${getMonthlyPAYE()}         |
-        |    Bonus: ${getMonthlyBonus()}         PRSI: ${getMonthlyPRSI()}          |
-        |                          Cycle to Work: ${cycleSchemeDeduction}  |
+        |    Bonus: ${getMonthlyBonus()}          PRSI: ${getMonthlyPRSI()}          |
+        |                          Cycle to Work: ${employee.cycleToWorkSchemeDeduction}  |
         |________________________________________________|
         |   Gross: ${getGrossMonthlyPay()}   Total Deductions: ${getTotalMonthlyDeductions()}   |
         |________________________________________________|
-        |                NET PAY: ${getNetMonthlyPay()}               |
+        |                NET PAY: ${getNetMonthlyPay()}                 |
         |________________________________________________|"""
 
+fun add(){
+    print("Enter first name: ")
+    val firstName = readLine().toString()
+    print("Enter surname: ")
+    val surname = readLine().toString()
+    print("Enter gender (m/f): ")
+    val gender = readLine()!!.toCharArray()[0]
+    print("Enter employee ID: ")
+    val employeeID = readLine()!!.toInt()
+    print("Enter gross salary: ")
+    val grossSalary = readLine()!!.toDouble()
+    print("Enter PAYE %: ")
+    val payePercentage = readLine()!!.toDouble()
+    print("Enter PRSI %: ")
+    val prsiPercentage = readLine()!!.toDouble()
+    print("Enter Annual Bonus: ")
+    val annualBonus = readLine()!!.toDouble()
+    print("Enter Cycle to Work Deduction: ")
+    val cycleToWorkDeduction = readLine()!!.toDouble()
+
+    employee = Employee(firstName, surname, gender, employeeID, grossSalary, payePercentage, prsiPercentage, annualBonus, cycleToWorkDeduction)
+}
 
 fun roundNumber(number: Double) = round(number*100) /100
 
-fun getFullName() = when (gender){
-    'm', 'M' -> "Mr $firstName $surName"
-    else -> { "Ms $firstName $surName"
-    }
+fun getFullName() = when (employee.gender){
+    'm', 'M' -> "Mr ${employee.firstName} ${employee.surName}"
+    'f', 'F' -> "Ms ${employee.firstName} ${employee.surName}"
+    else -> "${employee.firstName} ${employee.surName}"
 }
 
-fun getMonthlySalary() = roundNumber(grossSalary / 12)
+fun getMonthlySalary() = roundNumber(employee.grossSalary / 12)
 
-fun getMonthlyPAYE() = roundNumber(getMonthlySalary()/100*payePercentage)
+fun getMonthlyPAYE() = roundNumber(getMonthlySalary()/100*employee.payePercentage)
 
-fun getMonthlyBonus() = roundNumber(annualBonusAmount/12)
+fun getMonthlyBonus() = roundNumber(employee.annualBonus/12)
 
-fun getMonthlyPRSI() = roundNumber(getMonthlySalary()/100*prsiPercentage)
+fun getMonthlyPRSI() = roundNumber(getMonthlySalary()/100*employee.prsiPercentage)
 
-fun getGrossMonthlyPay() = roundNumber(getMonthlySalary()+(annualBonusAmount/12))
+fun getGrossMonthlyPay() = roundNumber(getMonthlySalary()+(employee.annualBonus/12))
 
-fun getTotalMonthlyDeductions() = roundNumber(getMonthlyPRSI()+getMonthlyPAYE()+cycleSchemeDeduction)
+fun getTotalMonthlyDeductions() = roundNumber(getMonthlyPRSI()+getMonthlyPAYE()+employee.cycleToWorkSchemeDeduction)
 
 fun getNetMonthlyPay() = roundNumber(getGrossMonthlyPay()-getTotalMonthlyDeductions())
